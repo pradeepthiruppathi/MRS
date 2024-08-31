@@ -1,0 +1,70 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class MovieRecommendationSystem {
+
+    // Sample movie database
+    static class Movie {
+        String title;
+        String description;
+        String genre;
+
+        public Movie(String title, String description, String genre) {
+            this.title = title;
+            this.description = description;
+            this.genre = genre;
+        }
+    }
+
+    // Method to normalize user input
+    public static String normalizeInput(String input) {
+        return input.trim().toLowerCase();
+    }
+
+    // Method to find movies by genre or keyword
+    public static List<Movie> findMovies(List<Movie> movies, String userInput) {
+        List<Movie> recommendedMovies = new ArrayList<>();
+        String normalizedInput = normalizeInput(userInput);
+
+        for (Movie movie : movies) {
+            // Normalize movie data for comparison
+            String normalizedTitle = normalizeInput(movie.title);
+            String normalizedDescription = normalizeInput(movie.description);
+            String normalizedGenre = normalizeInput(movie.genre);
+
+            // Check if input matches the title, description, or genre
+            if (normalizedTitle.contains(normalizedInput) ||
+                normalizedDescription.contains(normalizedInput) ||
+                normalizedGenre.contains(normalizedInput)) {
+                recommendedMovies.add(movie);
+            }
+        }
+
+        return recommendedMovies;
+    }
+
+    public static void main(String[] args) {
+        // Sample movie list
+        List<Movie> movies = new ArrayList<>();
+        movies.add(new Movie("The Matrix", "A computer hacker learns about the true nature of his reality.", "Sci-Fi"));
+        movies.add(new Movie("Toy Story", "A cowboy doll is profoundly threatened and jealous when a new spaceman figure supplants him as top toy in a boy's room.", "Animation"));
+        movies.add(new Movie("Inception", "A thief who steals corporate secrets through the use of dream-sharing technology.", "Sci-Fi"));
+        movies.add(new Movie("Comedy Movie", "A hilarious comedy that will leave you in splits.", "Comedy"));
+
+        // User input example
+        String userInput = "sci-fi";
+
+        // Get recommended movies based on user input
+        List<Movie> recommendations = findMovies(movies, userInput);
+
+        // Display recommended movies
+        if (!recommendations.isEmpty()) {
+            System.out.println("Recommended Movies:");
+            for (Movie movie : recommendations) {
+                System.out.println("- " + movie.title + ": " + movie.description + " (Genre: " + movie.genre + ")");
+            }
+        } else {
+            System.out.println("No movies found matching your input.");
+        }
+    }
+}
